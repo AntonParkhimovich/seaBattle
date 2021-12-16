@@ -1,23 +1,27 @@
 import logo from './logo.svg';
-import './App.css';
+import './style/main.scss';
+import{ ChangePlayer} from './components/gameStateComponents/ChangePlayer'
+import{ Start } from './components/gameStateComponents/Start'
+import{ Arragement } from './components/gameStateComponents/Arragement'
+import { Game } from './components/gameStateComponents/Game';
+import { Win } from './components/gameStateComponents/Win';
+import {useSelector} from 'react-redux'
+
 
 function App() {
+  const component =  useSelector(state=> state.gameState.component)
+  const components = {
+    start: Start,
+    arragement: Arragement,
+    changePlayer: ChangePlayer,
+    game: Game,
+    win: Win
+  }
+  const RenderComponent = components[component]
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <RenderComponent/>
     </div>
   );
 }
