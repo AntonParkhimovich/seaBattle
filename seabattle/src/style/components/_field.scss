@@ -1,0 +1,55 @@
+.game-field{
+    display: grid; 
+    grid-auto-columns: 1fr; 
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; 
+    gap: 0px 0px; 
+    border: 1px solid black;
+    width: 250px;
+    height: 250px;
+}
+.row{
+    display: grid; 
+    grid-auto-columns: 1fr; 
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; 
+    grid-template-rows: 1fr; 
+    gap: 0px 0px; 
+    grid-template-areas: 
+      ". . . . . . . . . ."; 
+}
+.cell{
+    border: 1px solid black;
+}
+.visible{
+   background-color: green;
+}
+.ship{
+    width: 25px;
+    height: 25px;
+    border: 1px solid black;
+    background-color: green;
+}
+.field-header{
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 0px 0px;
+    width: 250px;
+    margin-left:18px;
+    justify-items: center;
+    &__item{
+        list-style-type: none;
+    }
+}
+.field-main{
+    display: flex;
+    &__list{
+        display: grid; 
+        grid-auto-columns: 1fr; 
+        grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; 
+        gap: 0px 0px;
+        height: 250px;
+    }
+    &__item{
+        list-style-type: none;
+    }
+}
