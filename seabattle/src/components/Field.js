@@ -1,8 +1,6 @@
-import { useSelector } from "react-redux"
 import { Row } from "./Row"
-export const Field = () => {
-    const move = useSelector(state => state.gameState.move)
-    const field = useSelector(state => state[move].field)
+export const Field = ({field,player}) => {
+
 
     return (<div className={'field'}>
         <ul className={'field-header'}>
@@ -31,7 +29,7 @@ export const Field = () => {
                 <li className={'field-main__item'}>10</li>
             </ul>
             <div className={'game-field'}>
-                {field.map((row, index) => <Row row={row} index={index} />)}
+                {field.map((row, index) => <Row row={row} index={index} player={player} key={index}/>)}
             </div>
         </div>
     </div>
