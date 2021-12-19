@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './style/main.scss';
 import{ ChangePlayer} from './components/gameStateComponents/ChangePlayer'
 import{ Start } from './components/gameStateComponents/Start'
