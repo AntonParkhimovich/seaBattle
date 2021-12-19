@@ -8,8 +8,10 @@ export const Start = ()=>{
     }
     return(
         <>
-    <h1>Start</h1>
-    <button onClick = {clickHandler}>Start Game</button>
+        <div className={'start-page'}>
+        <h2 className={'title'}>Ship Battle</h2>
+        <button className={'button'} onClick = {clickHandler}>Start Game</button>
+        </div>
     </>
     )
 }
