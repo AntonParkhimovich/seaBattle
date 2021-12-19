@@ -30,7 +30,11 @@ export const checkBattleField = (x, y, shipDeck, field, shipDirection) => {
     } else {
         results.shipCell.push(field[y][x])
     }
-    results.checkCell = results.shipCell.every((cell) => cell.block === false)
+    if(results.shipCell.length === 0 ){
+        results.checkCell= false
+    }else{
+        results.checkCell = results.shipCell.every((cell) => cell.block === false)
+    }
     return results
 }
 const itterableSettings = (x, y, shipDeck, shipDirection) => {
@@ -65,4 +69,9 @@ const itterableSettings = (x, y, shipDeck, shipDirection) => {
         settings.endYiterrable = y + 1
     }
     return settings
+}
+export const checkHit = (shipCell, shipId)=>{
+    const shipArr = shipCell.filter(item => item.shipId === shipId)
+    let resultsCheck = shipArr.every((cell)=>cell.shot === true)
+    return resultsCheck
 }
