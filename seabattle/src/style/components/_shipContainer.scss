@@ -3,6 +3,9 @@
     height: 250px;
     &__main{
         display: flex;
-        height: 220px;
+        height: 69%;
+        width: 69%;
+        flex-wrap: wrap;
+        justify-content: space-around;
     }
 }

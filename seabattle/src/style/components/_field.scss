@@ -17,10 +17,10 @@
       ". . . . . . . . . ."; 
 }
 .cell{
-    border: 1px solid black;
+    border: 1px solid #513abb
 }
 .visible{
-   background-color: green;
+   background-color: #8f77ff
 }
 .ship{
     width: 25px;
@@ -52,4 +52,21 @@
     &__item{
         list-style-type: none;
     }
+}
+.shot{
+ border: 1px solid #513abb;
+}
+.shot::after{
+    content: '';
+    width: 7px;
+    height: 7px;
+    display: block;
+    background-color: #513abb;
+    border-radius: 4px;
+    margin-top: 8px;
+    margin-left: 8px;
+}
+.ship-shot{
+    background:url(./cross.png);
+    background-color: #8f78ff;
 }

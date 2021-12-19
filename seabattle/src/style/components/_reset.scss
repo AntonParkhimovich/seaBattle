@@ -4,3 +4,13 @@
     box-sizing: border-box;
   }
   
+#root{
+  font-family: 'Architects Daughter', cursive;
+  color: #513abb;
+}
+.App{
+  background: url(../background.jpg);
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+}
