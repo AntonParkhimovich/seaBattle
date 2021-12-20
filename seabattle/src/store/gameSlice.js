@@ -73,7 +73,7 @@ export const gameSlice = createSlice({
             state[state.gameState.move].ships = shipsData
             state[state.gameState.move].shipsCell = []
         },
-        clickCell(state, { payload }) {
+        dropShipInCell(state, { payload }) {
             const { x, y, shipIndex} = payload
             let ships = state[state.gameState.move].ships
             let ship = ships[shipIndex]
@@ -203,5 +203,5 @@ export const gameSlice = createSlice({
     }
 })
 
-export const { changeGameState, changeMove, initFieldMatrix, changeVisible, clickCell, changeDirectionShips, returnShips, changePlayerName, initGame, shot, randomShipGeneration, initNewGame} = gameSlice.actions
+export const { changeGameState, changeMove, initFieldMatrix, changeVisible, dropShipInCell, changeDirectionShips, returnShips, changePlayerName, initGame, shot, randomShipGeneration, initNewGame} = gameSlice.actions
 export const gameSliceReducer = gameSlice.reducer
