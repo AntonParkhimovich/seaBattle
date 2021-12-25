@@ -1,0 +1,13 @@
+.game-log{
+    &__wrapper{
+        width: 255px;
+        height: 150px;
+        border: 2px solid #513abb;
+        overflow-x: scroll;
+        display: flex;
+        flex-direction: column;
+    }
+}
+.gamelog-message{
+    font-size: 20px;
+}

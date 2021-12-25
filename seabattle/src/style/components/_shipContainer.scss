@@ -1,0 +1,11 @@
+.ship-container{
+    width: 250px;
+    height: 250px;
+    &__main{
+        display: flex;
+        height: 69%;
+        width: 69%;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+}

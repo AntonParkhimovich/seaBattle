@@ -1,0 +1,42 @@
+.ship1horizontally{
+width: 25px;
+height: 25px;
+}
+.ship2horizontally{
+    width: 50px;
+    height: 25px;
+}
+.ship3horizontally{
+    width: 75px;
+    height: 25px;
+}
+.ship4horizontally{
+    width:100px;
+    height: 25px;
+}
+.button-drag{
+    width: 25px;
+    height: 25px ;
+    cursor:grab;
+}
+.ship2vertically{
+    width: 25px;
+    height: 50px;
+}
+.ship3vertically{
+    width: 25px;
+    height: 75px;
+}
+.ship4vertically{
+    width: 25px;
+    height: 100px;
+}
+.ship1vertically{
+    width: 25px;
+    height: 25px;
+}
+.ship1horizontally, .ship1vertically, .ship4vertically, .ship3vertically,.ship2vertically,.ship4horizontally,.ship3horizontally,.ship2horizontally{
+    border: 2px solid #513abb;
+    background-color: #513abb;
+    
+}

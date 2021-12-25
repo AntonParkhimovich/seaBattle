@@ -1,0 +1,9 @@
+.arragement{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    
+    &-main{
+        display: flex;
+    }
+}
