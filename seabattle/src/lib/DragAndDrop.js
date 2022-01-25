@@ -3,10 +3,10 @@ import * as THREE from 'three'
 const raycaster = new THREE.Raycaster()
 
 class DragAndDrop {
-    constructor(scene, camera, arrayObjects, ground) {
+    constructor(scene, camera, arrayObjects, ground, mousePosition) {
         this.scene = scene
         this.camera = camera
-        this.mousePosition = new THREE.Vector2()
+        this.mousePosition = mousePosition
         this.draggableObject = null
         this.draggableObectsArray = arrayObjects
         this.ground = ground
@@ -17,23 +17,10 @@ class DragAndDrop {
         this.addListenerOnClick()
     }
 
-    addListenerOnClick() {
-        window.addEventListener('click', (event) => {
-            if (this.draggableObject !== null) {
-                this.draggableObject = null
-            } else {
-                const intersectObjects = rayCaster.intersectObjects(this.draggableObectsArray)
-                if (intersectObjects.length > 0) {
-                    this.draggableObject = this.checkDraggableObjects(intersectObjects[0].object)
-                }
-            }
-        })
-    }
+
 
     addListenerOnMouseMove() {
         window.addEventListener('mousemove', (event) => {
-            this.mousePosition.x = (event.clientX / window.innerWidth) * 2 - 1
-            this.mousePosition.y = -(event.clientY / window.innerHeight) * 2 + 1
             this.updateDragObject()
         })
     }

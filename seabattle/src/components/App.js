@@ -1,7 +1,8 @@
 import * as THREE from 'three'
-import start from "./GameComponents/Start";
+import StartComponent from "./GameComponents/Start";
 import {shipsField} from '../objects/shipsField'
 import base from "./BaseInit";
+
 class App {
 
     constructor(store, base) {
@@ -10,14 +11,10 @@ class App {
     }
     init() {
         this.base.init()
-        this.base.camera.position.z = 11
-        this.base.addToScene(shipsField)
         this.changeGameState()
-        start.init()
+        StartComponent.init()
     }
     changeGameState(){
-        this.store.dispatchActions({type:'changeGameComponent',value: 'shot'})
-        console.log(this.store.initialState)
     }
 
 }

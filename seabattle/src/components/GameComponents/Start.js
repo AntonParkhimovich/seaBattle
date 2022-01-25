@@ -1,15 +1,28 @@
+import DataParser from "./DataParser";
 import base from "../BaseInit";
-class Start{
-    constructor(base) {
-        this.base = base
+import startSceneData from "../../Scene Data/StartScene";
+import ArragementComponent from "../GameComponents/Arragement";
+class Start extends DataParser{
+    constructor(base, startSceneData) {
+        super(base, startSceneData);
     }
-    init(){
-    base.scene.clear()
-
+    init() {
+        super.init();
+        this.addListenerOnClick()
     }
-    createButton(){
+    addListenerOnClick() {
+        let {raycaster} = this.base
+        let listener = () => {
+            const foundIntersec = raycaster.intersectObject(this.gltfModels[0])
+            if (foundIntersec.length > 0) {
+                this.removeAllModels()
+                ArragementComponent.init()
+                window.removeEventListener('click', listener)
+            }
+        }
+        window.addEventListener('click', listener)
 
     }
 }
-const start = new Start(base)
-export default  start
+const StartComponent = new Start(base, startSceneData)
+export default StartComponent

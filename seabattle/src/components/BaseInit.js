@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
+import * as dat from 'dat.gui'
 class BaseInit {
     sizes = {
         width: window.innerWidth,
@@ -16,6 +17,9 @@ class BaseInit {
     clock = new THREE.Clock()
     pixelRatio = Math.min(window.devicePixelRatio, 2)
     controls = new OrbitControls(this.camera, this.canvas)
+    raycaster =  new THREE.Raycaster()
+    mousePosition = new THREE.Vector2()
+    gui = new dat.GUI()
     start(){
         window.requestAnimationFrame(this.tick.bind(this))
     }
@@ -26,8 +30,9 @@ class BaseInit {
         this.renderer.setSize(this.sizes.width, this.sizes.height)
         this.renderer.setPixelRatio(this.pixelRatio)
         this.controls.enableDamping = true
+        this.addListenerOnMouseMove()
         this.start()
-        this.controls.enableDamping = true
+
     }
     resizeWindow(){
         window.addEventListener('resize',(event)=>{
@@ -39,14 +44,22 @@ class BaseInit {
             this.renderer.setPixelRatio(this.pixelRatio)
         })
     }
+    addListenerOnMouseMove(){
+        window.addEventListener('mousemove', (event)=>{
+            this.mousePosition.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+            this.mousePosition.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+        })
+    }
     addToScene(object){
         this.scene.add(object)
     }
     tick(){
         this.controls.update()
         this.renderer.render(this.scene, this.camera)
+        this.raycaster.setFromCamera(this.mousePosition, this.camera)
         window.requestAnimationFrame(this.tick.bind(this))
     }
+
 }
  const base = new BaseInit()
 export default base
