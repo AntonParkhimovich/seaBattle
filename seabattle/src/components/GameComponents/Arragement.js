@@ -2,22 +2,27 @@ import DataParser from "./DataParser";
 import base from "../BaseInit";
 import ArragementSceneData from '../../Scene Data/ArragementScene'
 import * as THREE from 'three'
-import DragAndDrop from "../../lib/DragAndDrop";
-
+import {checkBattleField} from './../checkBattleFIeld'
+import store from "../GameStateStore";
 class Arragement extends DataParser {
     draggableObject = null
     plane = []
     ships = []
     initialDraggableObjectPosition = new THREE.Vector2()
-
-    constructor(base, data) {
+    directionShips = 'horizontally'
+    constructor(base, data, store) {
         super(base, data);
+        this.store = store
     }
 
-    init() {
-        super.init();
+   async init() {
+        await super.init();
         this.addListenerOnClick()
         this.addEventListenerOnMouseMove()
+        this.addButton()
+        this.sortSceneModels()
+        this.store.dispatchActions({type:'initField', value: null})
+       console.log(this.store.initialState.player1.field)
     }
     addListenerOnClick() {
         window.addEventListener('click', (event) => {
@@ -26,7 +31,6 @@ class Arragement extends DataParser {
             } else {
                 this.onDragStart()
             }
-
         })
     }
     addEventListenerOnMouseMove() {
@@ -37,7 +41,6 @@ class Arragement extends DataParser {
                 // const instersect = this.base.raycaster.intersectPlane()
                 this.draggableObject.position.z = -(this.base.mousePosition.x)*25
                 this.draggableObject.position.x = -(this.base.mousePosition.y)*16
-
             }
         })
     }
@@ -46,22 +49,44 @@ class Arragement extends DataParser {
         positionShip.x = this.draggableObject.position.x
         positionShip.y= this.draggableObject.position.z
         positionShip.ceil()
+        let x = positionShip.x
+        let y = -positionShip.y
+        // checkBattleField(x,y, this.draggableObject.deck,this.store.initialState.field )
         this.draggableObject.position.x = positionShip.x-.5
         this.draggableObject.position.z = positionShip.y-.3
-        console.log(this.draggableObject)
         this.draggableObject = null
     }
     onDragStart(){
-        this.gltfModels[0].children.forEach(child=>{
-            if(child.name!=='Plane001'&& child.name!== 'Plane002') this.ships.push(child)
-            else this.plane.push(child)
-        })
         const intersectObjects = this.base.raycaster.intersectObjects(this.ships)
         if(intersectObjects.length> 0 ){
             this.draggableObject = intersectObjects[0].object.parent
         }
     }
+    addButton(){
+        const button = document.createElement('button')
+        button.textContent = 'Change Direction'
+        button.className = 'button'
+        document.body.appendChild(button)
+        button.onclick  = ()=>this.changeShipDirection()
+    }
+    changeShipDirection(){
+        const shipRotation = this.directionShips === 'horizontally'? 1.6 : 0
+        this.ships.forEach(ship=> ship.rotation.y = shipRotation)
+        this.directionShips= this.directionShips === 'horizontally'?'vertically': "horizontally"
+    }
+    sortSceneModels(){
+        const models = this.base.scene.children[2].children
+        const {shipsConfig}= this.data
+        models.forEach(model=>{
+            if(model.name in shipsConfig){
+                model.deck = shipsConfig[model.name].shipDeck
+                this.ships.push(model)
+            }else{
+                this.plane.push(model)
+            }
+        })
+    }
 }
 
-const ArragementComponent = new Arragement(base, ArragementSceneData)
+const ArragementComponent = new Arragement(base, ArragementSceneData, store)
 export default ArragementComponent

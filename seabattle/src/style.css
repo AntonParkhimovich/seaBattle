@@ -12,3 +12,7 @@ html, body{
     overflow: hidden;
     background-color: aqua;
 }
+.button{
+    z-index: 2;
+    position: absolute;
+}

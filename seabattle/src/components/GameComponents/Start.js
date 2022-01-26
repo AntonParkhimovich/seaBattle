@@ -13,7 +13,7 @@ class Start extends DataParser{
     addListenerOnClick() {
         let {raycaster} = this.base
         let listener = () => {
-            const foundIntersec = raycaster.intersectObject(this.gltfModels[0])
+            const foundIntersec = raycaster.intersectObject(this.base.scene.children[2])
             if (foundIntersec.length > 0) {
                 this.removeAllModels()
                 ArragementComponent.init()

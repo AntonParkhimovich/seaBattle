@@ -3,7 +3,6 @@ import * as THREE from 'three'
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader'
 import startSceneData from "../../Scene Data/StartScene";
 import {mod} from "three/examples/jsm/renderers/nodes/ShaderNode";
-
 class DataParser {
     gltfModels = []
     loading = true
@@ -14,18 +13,12 @@ class DataParser {
         this.data = data
     }
 
-    init() {
+   async init() {
         const object = this.data.objects[0]
-        this.parseModelsInScene(object.url)
-            .then((data)=> data.scene)
-            .then((data)=> {
-                let {rotation} = object
-                data.rotation.set(rotation.x,rotation.y,rotation.z)
-                base.scene.add(data)
-                this.gltfModels.push(data)
-                return data
-            })
-
+        let {rotation} = object
+        const models = await this.parseModelsInScene(object.url)
+        models.scene.rotation.set(rotation.x, rotation.y, rotation.z)
+        this.base.scene.add(models.scene)
         this.setCameraPosition()
         this.setControls()
     }
@@ -44,8 +37,10 @@ class DataParser {
         this.base.controls.enabled = controls
     }
     removeAllModels(){
-        this.gltfModels.forEach((model)=>{
-            model.removeFromParent()
+        this.base.scene.children.forEach((model)=>{
+            if(model.type === 'Group'){
+                model.removeFromParent()
+            }
         })
     }
     removeModel(model){

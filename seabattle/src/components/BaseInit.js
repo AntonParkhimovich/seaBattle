@@ -19,10 +19,9 @@ class BaseInit {
     controls = new OrbitControls(this.camera, this.canvas)
     raycaster =  new THREE.Raycaster()
     mousePosition = new THREE.Vector2()
+    axisHelper = new THREE.AxesHelper(20)
     gui = new dat.GUI()
-    start(){
-        window.requestAnimationFrame(this.tick.bind(this))
-    }
+
     init() {
         this.resizeWindow()
         this.addToScene(this.camera)
@@ -33,6 +32,9 @@ class BaseInit {
         this.addListenerOnMouseMove()
         this.start()
 
+    }
+    start(){
+        window.requestAnimationFrame(this.tick.bind(this))
     }
     resizeWindow(){
         window.addEventListener('resize',(event)=>{
