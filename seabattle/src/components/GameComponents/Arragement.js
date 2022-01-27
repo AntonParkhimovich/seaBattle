@@ -8,7 +8,7 @@ class Arragement extends DataParser {
     draggableObject = null
     plane = []
     ships = []
-    initialDraggableObjectPosition = new THREE.Vector2()
+    startShipPosition = new THREE.Vector3()
     directionShips = 'horizontally'
     constructor(base, data, store) {
         super(base, data);
@@ -22,7 +22,6 @@ class Arragement extends DataParser {
         this.addButton()
         this.sortSceneModels()
         this.store.dispatchActions({type:'initField', value: null})
-       console.log(this.store.initialState.player1.field)
     }
     addListenerOnClick() {
         window.addEventListener('click', (event) => {
@@ -36,10 +35,7 @@ class Arragement extends DataParser {
     addEventListenerOnMouseMove() {
         window.addEventListener('mousemove', (event) => {
             if (this.draggableObject !== null) {
-                // const shipPosition = new THREE.Vector3()
-                // const plane =  this.gltfModels
-                // const instersect = this.base.raycaster.intersectPlane()
-                this.draggableObject.position.z = -(this.base.mousePosition.x)*25
+                this.draggableObject.position.z = -(this.base.mousePosition.x)*30
                 this.draggableObject.position.x = -(this.base.mousePosition.y)*16
             }
         })
@@ -49,17 +45,17 @@ class Arragement extends DataParser {
         positionShip.x = this.draggableObject.position.x
         positionShip.y= this.draggableObject.position.z
         positionShip.ceil()
-        let x = positionShip.x
+        let x = -positionShip.x
         let y = -positionShip.y
-        // checkBattleField(x,y, this.draggableObject.deck,this.store.initialState.field )
-        this.draggableObject.position.x = positionShip.x-.5
-        this.draggableObject.position.z = positionShip.y-.3
-        this.draggableObject = null
+        this.addShipOnPlane(x,y)
     }
     onDragStart(){
         const intersectObjects = this.base.raycaster.intersectObjects(this.ships)
         if(intersectObjects.length> 0 ){
             this.draggableObject = intersectObjects[0].object.parent
+            this.startShipPosition.x = this.draggableObject.position.x
+            this.startShipPosition.z = this.draggableObject.position.z
+            this.startShipPosition.y = this.draggableObject.position.y
         }
     }
     addButton(){
@@ -85,7 +81,37 @@ class Arragement extends DataParser {
                 this.plane.push(model)
             }
         })
+        this.plane[1].add(this.base.axisHelper)
     }
+    addShipOnPlane(x,y){
+        const resultsCheck = checkBattleField(x,y, this.draggableObject.deck,this.store.initialState[this.store.initialState.gameState.move].field, this.directionShips, this.ships)
+        if(resultsCheck.checkCell){
+            this.draggableObject.position.x = -x-.5
+            this.draggableObject.position.z = -y-.3
+            this.store.dispatchActions({type:'addShip', value: this.draggableObject})
+            this.store.dispatchActions({type: 'addShipCell', value: resultsCheck.shipCell})
+            this.store.dispatchActions({type: 'blockCell', value: resultsCheck.cell})
+            this.ships.forEach((ship, index)=> ship.name === this.draggableObject.name ? this.ships.splice(index, 1): null)
+            this.draggableObject = null
+           if(this.ships.length === 0){
+               if(this.store.initialState.gameState.move === 'player1'){
+                   this.store.dispatchActions({type:'changeMove', value: null})
+                   this.removeAllModels()
+                   this.init()
+               }else {
+                   this.store.dispatchActions({type:'changeMove', value: null})
+                   this.removeAllModels()
+               }
+
+           }
+        }else {
+            this.draggableObject.position.x = this.startShipPosition.x
+            this.draggableObject.position.y = this.startShipPosition.y
+            this.draggableObject.position.z = this.startShipPosition.z
+            this.draggableObject = null
+        }
+    }
+
 }
 
 const ArragementComponent = new Arragement(base, ArragementSceneData, store)

@@ -6,24 +6,36 @@ class GameReducerStore{
        },
        player1:{
            field:[],
+           shipsCell:[],
            ships:[]
        },
        player2:{
            field:[],
+           shipsCell:[],
            ships:[]
        }
    }
    dispatchActions(action){
        let {type, value} = action
-       switch (type){
+       switch (type) {
            case 'changeGameComponent':
                this.initialState.gameState.gameComponent = value
                break
            case 'changeMove':
-               this.initialState.gameState.move = value
+               this.changeMove()
+               break
            case  'initField':
                this.initField()
-           default: return this.initialState
+               break
+           case 'addShip':
+               this.addShip(value)
+               break
+           case 'addShipCell':
+               this.addShipCell(value)
+               break
+           case 'blockCell':
+               this.blockCellOnField(value)
+               break
        }
    }
    initField(){
@@ -46,6 +58,22 @@ class GameReducerStore{
        }
        this.initialState[this.initialState.gameState.move].field = fieldMatrix
    }
+   addShip(value){
+       this.initialState[this.initialState.gameState.move].ships.push(value)
+   }
+   addShipCell(value){
+       this.initialState[this.initialState.gameState.move].shipsCell.push(value)
+   }
+   blockCellOnField(value){
+       value.forEach(cell=>{
+           let cellOnField = this.initialState[this.initialState.gameState.move].field[cell.y][cell.x]
+           cellOnField.block = true
+       })
+   }
+   changeMove(){
+       this.initialState.gameState.move === 'player1'? this.initialState.gameState.move ='player2': this.initialState.gameState.move = 'player1'
+   }
+
 }
 const store = new GameReducerStore()
 export default store
