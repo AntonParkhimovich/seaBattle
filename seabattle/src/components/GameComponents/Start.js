@@ -1,7 +1,11 @@
 import DataParser from "./DataParser";
 import base from "../BaseInit";
 import startSceneData from "../../Scene Data/StartScene";
-import ArragementComponent from "../GameComponents/Arragement";
+import changeMove from "./ChangeMoove";
+import ArragementComponent from "./Arragement";
+import Game from "./Game";
+import GameSceneData from '../../Scene Data/GameScene'
+import store from "../GameStateStore";
 class Start extends DataParser{
     constructor(base, startSceneData) {
         super(base, startSceneData);
@@ -16,12 +20,12 @@ class Start extends DataParser{
             const foundIntersec = raycaster.intersectObject(this.base.scene.children[2])
             if (foundIntersec.length > 0) {
                 this.removeAllModels()
-                ArragementComponent.init()
+                const game = new Game(store, GameSceneData, base)
+                game.init()
                 window.removeEventListener('click', listener)
             }
         }
         window.addEventListener('click', listener)
-
     }
 }
 const StartComponent = new Start(base, startSceneData)

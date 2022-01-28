@@ -4,6 +4,8 @@ import ArragementSceneData from '../../Scene Data/ArragementScene'
 import * as THREE from 'three'
 import {checkBattleField} from './../checkBattleFIeld'
 import store from "../GameStateStore";
+import Game from "./Game";
+import changeMove from "./ChangeMoove";
 class Arragement extends DataParser {
     draggableObject = null
     plane = []
@@ -22,6 +24,7 @@ class Arragement extends DataParser {
         this.addButton()
         this.sortSceneModels()
         this.store.dispatchActions({type:'initField', value: null})
+       console.log(this.base.scene.children)
     }
     addListenerOnClick() {
         window.addEventListener('click', (event) => {
@@ -30,8 +33,10 @@ class Arragement extends DataParser {
             } else {
                 this.onDragStart()
             }
+            this.removeAllShips()
         })
     }
+
     addEventListenerOnMouseMove() {
         window.addEventListener('mousemove', (event) => {
             if (this.draggableObject !== null) {
@@ -94,15 +99,15 @@ class Arragement extends DataParser {
             this.ships.forEach((ship, index)=> ship.name === this.draggableObject.name ? this.ships.splice(index, 1): null)
             this.draggableObject = null
            if(this.ships.length === 0){
-               if(this.store.initialState.gameState.move === 'player1'){
-                   this.store.dispatchActions({type:'changeMove', value: null})
-                   this.removeAllModels()
-                   this.init()
-               }else {
-                   this.store.dispatchActions({type:'changeMove', value: null})
-                   this.removeAllModels()
-               }
-
+               // this.store.addLocalStorage()
+               // if(this.store.initialState.gameState.move === "player2"){
+               //     this.removeAllModels()
+               // } else {
+               //     this.removeAllShips()
+               // }
+               // // const game = new Game(store, base)
+               // // game.init()
+               //     changeMove.init()
            }
         }else {
             this.draggableObject.position.x = this.startShipPosition.x
@@ -111,8 +116,12 @@ class Arragement extends DataParser {
             this.draggableObject = null
         }
     }
+    removeAllShips(){
+        this.removeAllModels()
+        this.plane.forEach(plane => this.base.scene.add(plane))
+    }
 
 }
 
-const ArragementComponent = new Arragement(base, ArragementSceneData, store)
-export default ArragementComponent
+
+export default Arragement

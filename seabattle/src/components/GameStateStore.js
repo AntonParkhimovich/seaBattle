@@ -1,7 +1,7 @@
 class GameReducerStore{
    initialState = {
        gameState:{
-           gameComponent: 'Start',
+           gameComponent: 'start',
            move:'player1'
        },
        player1:{
@@ -72,6 +72,14 @@ class GameReducerStore{
    }
    changeMove(){
        this.initialState.gameState.move === 'player1'? this.initialState.gameState.move ='player2': this.initialState.gameState.move = 'player1'
+   }
+   addLocalStorage(){
+       const localStorage = window.localStorage
+       this.initialState.player1 = this.initialState.player2
+       localStorage.setItem('state',JSON.stringify(this.initialState))
+   }
+   getLocalstorage(){
+       this.initialState = JSON.parse(window.localStorage.getItem('state'))
    }
 
 }

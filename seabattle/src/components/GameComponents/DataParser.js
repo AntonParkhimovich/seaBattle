@@ -4,7 +4,6 @@ import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader'
 import startSceneData from "../../Scene Data/StartScene";
 import {mod} from "three/examples/jsm/renderers/nodes/ShaderNode";
 class DataParser {
-    gltfModels = []
     loading = true
     loader = new GLTFLoader()
 

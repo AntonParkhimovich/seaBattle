@@ -16,3 +16,10 @@ html, body{
     z-index: 2;
     position: absolute;
 }
+.modal{
+    width: 100px;
+    height: 100px;
+    background-color: white;
+    z-index: 1;
+    position: absolute;
+}
