@@ -33,7 +33,6 @@ class Arragement extends DataParser {
             } else {
                 this.onDragStart()
             }
-            this.removeAllShips()
         })
     }
 
@@ -86,7 +85,6 @@ class Arragement extends DataParser {
                 this.plane.push(model)
             }
         })
-        this.plane[1].add(this.base.axisHelper)
     }
     addShipOnPlane(x,y){
         const resultsCheck = checkBattleField(x,y, this.draggableObject.deck,this.store.initialState[this.store.initialState.gameState.move].field, this.directionShips, this.ships)
@@ -99,7 +97,7 @@ class Arragement extends DataParser {
             this.ships.forEach((ship, index)=> ship.name === this.draggableObject.name ? this.ships.splice(index, 1): null)
             this.draggableObject = null
            if(this.ships.length === 0){
-               // this.store.addLocalStorage()
+               this.store.addLocalStorage()
                // if(this.store.initialState.gameState.move === "player2"){
                //     this.removeAllModels()
                // } else {

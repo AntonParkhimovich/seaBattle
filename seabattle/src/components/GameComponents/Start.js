@@ -6,6 +6,7 @@ import ArragementComponent from "./Arragement";
 import Game from "./Game";
 import GameSceneData from '../../Scene Data/GameScene'
 import store from "../GameStateStore";
+import ArragementSceneData from "../../Scene Data/ArragementScene";
 class Start extends DataParser{
     constructor(base, startSceneData) {
         super(base, startSceneData);
@@ -22,6 +23,8 @@ class Start extends DataParser{
                 this.removeAllModels()
                 const game = new Game(store, GameSceneData, base)
                 game.init()
+                // const Arragement = new ArragementComponent(base, ArragementSceneData, store)
+                // Arragement.init()
                 window.removeEventListener('click', listener)
             }
         }

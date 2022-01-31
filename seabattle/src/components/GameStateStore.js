@@ -2,7 +2,8 @@ class GameReducerStore {
     initialState = {
         gameState: {
             gameComponent: 'start',
-            move: 'player1'
+            move: 'player1',
+            resultShot:''
         },
         player1: {
             field: [],
@@ -17,7 +18,7 @@ class GameReducerStore {
     }
 
     dispatchActions(action) {
-        let {type, value} = action
+        let { type, value } = action
         switch (type) {
             case 'changeGameComponent':
                 this.initialState.gameState.gameComponent = value
@@ -25,7 +26,7 @@ class GameReducerStore {
             case 'changeMove':
                 this.changeMove()
                 break
-            case  'initField':
+            case 'initField':
                 this.initField()
                 break
             case 'addShip':
@@ -69,7 +70,11 @@ class GameReducerStore {
     }
 
     addShipCell(value) {
-        this.initialState[this.initialState.gameState.move].shipsCell.push(value)
+        const player = this.initialState[this.initialState.gameState.move]
+        value.forEach((cell) => {
+            player.field[cell.y][cell.x].containsShip = true
+        })
+        player.shipsCell.push(value)
     }
 
     blockCellOnField(value) {
@@ -85,7 +90,7 @@ class GameReducerStore {
 
     addLocalStorage() {
         const localStorage = window.localStorage
-        this.initialState.player1 = this.initialState.player2
+        this.initialState.player2 = this.initialState.player1
         localStorage.setItem('state', JSON.stringify(this.initialState))
     }
 
@@ -97,29 +102,44 @@ class GameReducerStore {
         const enemy = this.initialState.gameState.move === 'player1' ? 'player2' : 'player1'
         const enemyShips = this.initialState[enemy].shipsCell
         const enemyField = this.initialState[enemy].field
-        let resultShot = ''
-        // if(enemyField[shot.x][shot.y].containsShip === true && enemyField[shot.x][shot.y].shot === false){
-            const shipsArray = enemyField.forEach((ship)=> {
-                ship.forEach((cell, index, ship)=> {
-                    if(cell.x === shot.x&& cell.y === shot.y){
-                        return ship
-                    }
-                })
+        
+        if (enemyField[shot.y][shot.x].containsShip === true) {
+            if (!enemyField[shot.y][shot.x].shot) {
+                let shipCellArray = this.findShipCellArray(enemyShips, shot)
+                this.initialState.gameState.resultShot = this.checkShipsCellArray(shipCellArray)
+            }
+        }
+        else {
+            this.initialState.gameState.resultShot = 'MISS'
+        }
+        enemyField[shot.y][shot.x].shot = true
+        // this.addLocalStorage()
+        console.log(enemyField[shot.y][shot.x]);
+    }
+    findShipCellArray(enemyShips, shot) {
+        let shipCellArray = []
+        enemyShips.forEach((ship) => {
+            ship.forEach((cell) => {
+                if (cell.x === shot.x && cell.y === shot.y) {
+                    cell.shot = true
+                    shipCellArray = ship
+                }
             })
-            console.log(shipsArray)
-        // }
-
-        // enemyShips.forEach((ship) => {
-        //     ship.forEach((cell,i,ship) => {
-        //         // console.log(cell.x === shot.x&& cell.y === shot.y)
-        //         if (cell.x === shot.x && cell.y === shot.y) {
-        //             enemyField[cell.x][cell.y].shot = true
-        //             enemyField[cell.x][cell.y].containsShip = true
-        //             ship.length> 1? resultShot = 'HIT': resultShot = 'KILL'
-        //         }
-        //     })
-        // })
-
+        })
+        return shipCellArray
+    }
+    checkShipsCellArray(arr){
+        let resultsCheck = ''
+        if(arr.length === 1){
+            resultsCheck = 'KILL'
+        }else{
+            if(arr.every((cell)=> cell.shot === true)){
+                 resultsCheck = 'KILL'
+            }else{
+                resultsCheck = 'HIT'
+            }
+        }
+        return resultsCheck
     }
 }
 
