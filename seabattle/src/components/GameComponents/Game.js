@@ -8,6 +8,7 @@ class Game extends DataParser{
     playerField
     enemyField
     playerShips
+    shotCoordinates = new THREE.Vector2()
     constructor(store, data, base) {
         super(base, data)
         this.store = store
@@ -18,7 +19,6 @@ class Game extends DataParser{
         this.store.getLocalstorage()
         // this.playerShips = this.store.initialState[this.store.initialState.gameState.move].ships
         // this.playerShips.forEach(ship=> this.base.scene.add(ship))
-
         this.addEventListenerOnClick()
         console.log(this.store)
     }
@@ -27,14 +27,14 @@ class Game extends DataParser{
             const raycaster = this.base.raycaster
            const intersect = raycaster.intersectObject(this.base.scene.children[2])
           this.normalizeShotCoordinates(intersect)
+          this.store.dispatchActions({type: 'shot', value: this.shotCoordinates})
         })
     }
     normalizeShotCoordinates(intersect){
-        const shotCoordinates = new THREE.Vector2()
-        shotCoordinates.x = -(intersect[0].point.x+1)
-        shotCoordinates.y = -(intersect[0].point.z + 13)
-        shotCoordinates.ceil()
-        console.log(shotCoordinates)
+        this.shotCoordinates.x = -(intersect[0].point.x+1)
+        this.shotCoordinates.y = -(intersect[0].point.z + 13)
+        this.shotCoordinates.ceil()
+        console.log(this.shotCoordinates)
     }
 }
 export default Game
