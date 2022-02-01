@@ -16,6 +16,12 @@ const GameSceneData = {
         visible: false,
         url:"/objects/cross.gltf"
     },
+    {name: 'gameShips',
+    position: {x:0, y:0,z:0},
+    rotation: {x:0, y:0, z:0},
+    visible: false,
+    url:"/objects/gameShips.gltf"
+}
 ],
     camera:{
         position:{x: 5, y: 18, z: 0}

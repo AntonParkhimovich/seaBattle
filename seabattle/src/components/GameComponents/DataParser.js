@@ -1,8 +1,7 @@
 import base from "../BaseInit";
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import startSceneData from "../../Scene Data/StartScene";
-import { mod } from "three/examples/jsm/renderers/nodes/ShaderNode";
+
 class DataParser {
     loading = true
     loader = new GLTFLoader()

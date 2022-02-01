@@ -4,9 +4,11 @@ import base from "../BaseInit";
 import * as THREE from 'three'
 
 class Game extends DataParser {
+    player
+    enemy
     playerField
     enemyField
-    playerShips
+    playerShipsModels
     shotCoordinates = new THREE.Vector2()
     cross
     point
@@ -18,14 +20,16 @@ class Game extends DataParser {
     async init() {
         await super.init()
         this.store.getLocalstorage()
+        this.player = this.store.initialState.gameState.move
+        this.enemy = this.player === 'player1'? 'player2': 'player1'
         this.cross = this.base.scene.children[4].children[0]
         this.point = this.base.scene.children[3].children[0]
-        this.enemyField = this.store.initialState[this.store.initialState.gameState.move].field
-        console.log(this.store.initialState);
-        // this.playerShips = this.store.initialState[this.store.initialState.gameState.move].ships
-        // this.playerShips.forEach(ship=> this.base.scene.add(ship))
+        this.playerField = this.store.initialState[this.player].field
+        this.enemyField = this.store.initialState[this.enemy].field
+        this.playerShipsModels = this.base.scene.children[5].children
         this.addEventListenerOnClick()
         this.initEnemyField()
+        this.initPlayerField()
     }
     addEventListenerOnClick() {
         window.addEventListener('click', () => {
@@ -61,13 +65,51 @@ class Game extends DataParser {
         point.visible = true
         this.base.scene.add(point)
     }
-    initEnemyField(){
-        this.enemyField.forEach((row, x)=>{
+    initPlayerFieldModelsShip(){
+        const playerShipsData = this.store.initialState[this.store.initialState.gameState.move].ships
+        playerShipsData.forEach((ship) => {
+            let newShip
+            switch (ship.deck) {
+                case 1:
+                    newShip = this.playerShipsModels[1].clone()
+                    break;
+                case 2:
+                    newShip = this.playerShipsModels[2].clone()
+                    break;
+                case 3:
+                    newShip = this.playerShipsModels[3].clone() 
+                    break;
+
+                case 4:
+                    newShip = this.playerShipsModels[0].clone()
+                    break;
+            }
+            newShip.position.set(ship.position.x, 0.3, ship.position.z)
+            newShip.rotation.set(ship.rotation._x, ship.rotation._y, ship.rotation._z)
+            this.base.scene.add(newShip)
+        })
+
+    }
+    initPlayerField() {
+        this.initPlayerFieldModelsShip()
+        this.playerField.forEach((row)=>{
             row.forEach((cell)=>{
-                const planePosition =  new THREE.Vector3(-(cell.x),0, -(cell.y)-12)
-                if(cell.shot && cell.containsShip){
+                const planePosition = new THREE.Vector3(-(cell.x), 0, -(cell.y))
+                if(cell.shot&& cell.containsShip){
                     this.addCross(planePosition)
-                }if(cell.shot&& !cell.containsShip){
+                }if(cell.shot && !cell.containsShip){
+                    this.addPoint(planePosition)
+                }
+            })
+        })
+    }
+    initEnemyField() {
+        this.enemyField.forEach((row) => {
+            row.forEach((cell) => {
+                const planePosition = new THREE.Vector3(-(cell.x), 0, -(cell.y) - 12)
+                if (cell.shot && cell.containsShip) {
+                    this.addCross(planePosition)
+                } if (cell.shot && !cell.containsShip) {
                     this.addPoint(planePosition)
                 }
             })

@@ -3,7 +3,7 @@ class GameReducerStore {
         gameState: {
             gameComponent: 'start',
             move: 'player1',
-            resultShot:''
+            resultShot: ''
         },
         player1: {
             field: [],
@@ -66,7 +66,13 @@ class GameReducerStore {
     }
 
     addShip(value) {
-        this.initialState[this.initialState.gameState.move].ships.push(value)
+        const playerShipsData = this.initialState[this.initialState.gameState.move].ships
+        playerShipsData.push({
+            deck: value.deck,
+            position: value.position,
+            rotation: value.rotation
+        })
+        console.log(playerShipsData);
     }
 
     addShipCell(value) {
@@ -102,7 +108,7 @@ class GameReducerStore {
         const enemy = this.initialState.gameState.move === 'player1' ? 'player2' : 'player1'
         const enemyShips = this.initialState[enemy].shipsCell
         const enemyField = this.initialState[enemy].field
-        
+
         if (enemyField[shot.y][shot.x].containsShip === true) {
             if (!enemyField[shot.y][shot.x].shot) {
                 let shipCellArray = this.findShipCellArray(enemyShips, shot)
@@ -114,7 +120,7 @@ class GameReducerStore {
         }
         enemyField[shot.y][shot.x].shot = true
         // this.addLocalStorage()
-        console.log(enemyField[shot.y][shot.x]);
+        console.log(this.initialState.gameState.resultShot);
     }
     findShipCellArray(enemyShips, shot) {
         let shipCellArray = []
@@ -128,14 +134,14 @@ class GameReducerStore {
         })
         return shipCellArray
     }
-    checkShipsCellArray(arr){
+    checkShipsCellArray(arr) {
         let resultsCheck = ''
-        if(arr.length === 1){
+        if (arr.length === 1) {
             resultsCheck = 'KILL'
-        }else{
-            if(arr.every((cell)=> cell.shot === true)){
-                 resultsCheck = 'KILL'
-            }else{
+        } else {
+            if (arr.every((cell) => cell.shot === true)) {
+                resultsCheck = 'KILL'
+            } else {
                 resultsCheck = 'HIT'
             }
         }
