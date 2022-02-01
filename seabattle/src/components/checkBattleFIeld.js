@@ -80,8 +80,3 @@ const itterableSettings = (x, y, shipDeck, shipDirection) => {
     }
     return settings
 }
-export const checkHit = (shipCell, shipId) => {
-    const shipArr = shipCell.filter(item => item.shipId === shipId)
-    let resultsCheck = shipArr.every((cell)=>cell.shot === true)
-    return resultsCheck
-}

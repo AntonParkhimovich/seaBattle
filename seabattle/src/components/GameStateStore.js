@@ -3,17 +3,20 @@ class GameReducerStore {
         gameState: {
             gameComponent: 'start',
             move: 'player1',
-            resultShot: ''
+            resultShot: '',
+            winner:''
         },
         player1: {
             field: [],
             shipsCell: [],
-            ships: []
+            ships: [],
+            killedShips:[]
         },
         player2: {
             field: [],
             shipsCell: [],
-            ships: []
+            ships: [],
+            killedShips:[]
         }
     }
 
@@ -92,18 +95,8 @@ class GameReducerStore {
 
     changeMove() {
         this.initialState.gameState.move === 'player1' ? this.initialState.gameState.move = 'player2' : this.initialState.gameState.move = 'player1'
+        
     }
-
-    addLocalStorage() {
-        const localStorage = window.localStorage
-        this.initialState.player2 = this.initialState.player1
-        localStorage.setItem('state', JSON.stringify(this.initialState))
-    }
-
-    getLocalstorage() {
-        this.initialState = JSON.parse(window.localStorage.getItem('state'))
-    }
-
     checkShot(shot) {
         const enemy = this.initialState.gameState.move === 'player1' ? 'player2' : 'player1'
         const enemyShips = this.initialState[enemy].shipsCell
@@ -113,14 +106,16 @@ class GameReducerStore {
             if (!enemyField[shot.y][shot.x].shot) {
                 let shipCellArray = this.findShipCellArray(enemyShips, shot)
                 this.initialState.gameState.resultShot = this.checkShipsCellArray(shipCellArray)
+                if(this.initialState.gameState.resultShot === 'KILL'){
+                    this.initialState[enemy].killedShips.push(shipCellArray)
+                    this.checkWinner(this.initialState[enemy].killedShips)
+                }
             }
         }
         else {
             this.initialState.gameState.resultShot = 'MISS'
         }
         enemyField[shot.y][shot.x].shot = true
-        // this.addLocalStorage()
-        console.log(this.initialState.gameState.resultShot);
     }
     findShipCellArray(enemyShips, shot) {
         let shipCellArray = []
@@ -146,6 +141,9 @@ class GameReducerStore {
             }
         }
         return resultsCheck
+    }
+    checkWinner(arr){
+        arr.length === 10? this.initialState.gameState.winner = this.initialState.gameState.move: null
     }
 }
 

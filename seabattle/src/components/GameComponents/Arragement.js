@@ -3,7 +3,6 @@ import base from "../BaseInit";
 import ArragementSceneData from '../../Scene Data/ArragementScene'
 import * as THREE from 'three'
 import {checkBattleField} from './../checkBattleFIeld'
-import store from "../GameStateStore";
 import Game from "./Game";
 import changeMove from "./ChangeMoove";
 class Arragement extends DataParser {
@@ -24,7 +23,7 @@ class Arragement extends DataParser {
         this.addButton()
         this.sortSceneModels()
         this.store.dispatchActions({type:'initField', value: null})
-       console.log(this.base.scene.children)
+       console.log(this.store.initialState)
     }
     addListenerOnClick() {
         window.addEventListener('click', (event) => {
@@ -55,6 +54,7 @@ class Arragement extends DataParser {
     }
     onDragStart(){
         const intersectObjects = this.base.raycaster.intersectObjects(this.ships)
+        console.log(this.ships);
         if(intersectObjects.length> 0 ){
             this.draggableObject = intersectObjects[0].object.parent
             this.startShipPosition.x = this.draggableObject.position.x
@@ -76,7 +76,8 @@ class Arragement extends DataParser {
     }
     sortSceneModels(){
         const models = this.base.scene.children[2].children
-        const {shipsConfig}= this.data
+        console.log();
+        const {shipsConfig} = this.data
         models.forEach(model=>{
             if(model.name in shipsConfig){
                 model.deck = shipsConfig[model.name].shipDeck
@@ -97,15 +98,8 @@ class Arragement extends DataParser {
             this.ships.forEach((ship, index)=> ship.name === this.draggableObject.name ? this.ships.splice(index, 1): null)
             this.draggableObject = null
            if(this.ships.length === 0){
-               this.store.addLocalStorage()
-               // if(this.store.initialState.gameState.move === "player2"){
-               //     this.removeAllModels()
-               // } else {
-               //     this.removeAllShips()
-               // }
-               // // const game = new Game(store, base)
-               // // game.init()
-               //     changeMove.init()
+                    this.removeAllModels()
+                   changeMove.init()
            }
         }else {
             this.draggableObject.position.x = this.startShipPosition.x

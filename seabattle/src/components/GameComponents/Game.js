@@ -19,7 +19,6 @@ class Game extends DataParser {
     }
     async init() {
         await super.init()
-        this.store.getLocalstorage()
         this.player = this.store.initialState.gameState.move
         this.enemy = this.player === 'player1'? 'player2': 'player1'
         this.cross = this.base.scene.children[4].children[0]
