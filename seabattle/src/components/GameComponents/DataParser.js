@@ -22,7 +22,6 @@ class DataParser {
             this.base.scene.add(model.scene)
         }
         this.setCameraPosition()
-        this.setControls()
     }
 
 
@@ -32,7 +31,9 @@ class DataParser {
     }
     setCameraPosition() {
         let { position } = this.data.camera
+        let { rotation } = this.data.camera
         this.base.camera.position.set(position.x, position.y, position.z)
+        this.base.camera.rotation.set(rotation.x, rotation.y, rotation.z)
     }
     setControls() {
         let { controls } = this.data

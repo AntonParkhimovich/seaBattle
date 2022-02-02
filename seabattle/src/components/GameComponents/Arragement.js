@@ -52,13 +52,14 @@ class Arragement extends DataParser {
         this.addShipOnPlane(x,y)
     }
     onDragStart(){
-        const intersectObjects = this.base.raycaster.intersectObjects(this.ships)
-        if(intersectObjects.length> 0 ){
-            this.draggableObject = intersectObjects[0].object.parent
-            this.startShipPosition.x = this.draggableObject.position.x
-            this.startShipPosition.z = this.draggableObject.position.z
-            this.startShipPosition.y = this.draggableObject.position.y
-        }
+        const intersectObjects = this.base.raycaster.intersectObjects(this.base.scene.children[2].children[0].children)
+        console.log(intersectObjects);
+        // if(intersectObjects.length> 0 ){
+        //     this.draggableObject = intersectObjects[0].object.parent
+        //     this.startShipPosition.x = this.draggableObject.position.x
+        //     this.startShipPosition.z = this.draggableObject.position.z
+        //     this.startShipPosition.y = this.draggableObject.position.y
+        // }
     }
     addButton(){
         const button = document.createElement('button')

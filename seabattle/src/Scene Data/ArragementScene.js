@@ -6,7 +6,8 @@ const ArragementSceneData = {
         url:"/objects/arragement.gltf"
     }],
     camera:{
-        position:{x: 5, y: 18, z: 0}
+        position:{x: 0, y:13, z: 8},
+        rotation:{x: -0.28, y: 0, z:0}
     },
     shipsConfig:{
         oneDeck1:{shipDeck: 1},
@@ -20,6 +21,5 @@ const ArragementSceneData = {
         twoDeck3002:{shipDeck: 2},
         FourDeck:{shipDeck: 4}
     },
-    controls: false
 }
 export default ArragementSceneData
