@@ -31,7 +31,9 @@ class BaseInit {
         this.controls.enableDamping = true
         this.addListenerOnMouseMove()
         this.start()
-
+        this.gui.add(this.camera.position, 'x')
+        this.gui.add(this.camera.position, 'y')
+        this.gui.add(this.camera.position, 'z')
     }
     start(){
         window.requestAnimationFrame(this.tick.bind(this))

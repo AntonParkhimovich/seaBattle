@@ -2,6 +2,7 @@ import DataParser from "./DataParser";
 import store from "../GameStateStore";
 import base from "../BaseInit";
 import * as THREE from 'three'
+import changeMove from "./ChangeMoove";
 
 class Game extends DataParser {
     player
@@ -12,6 +13,8 @@ class Game extends DataParser {
     shotCoordinates = new THREE.Vector2()
     cross
     point
+    cloneArray = []
+
     constructor(store, data, base) {
         super(base, data)
         this.store = store
@@ -43,6 +46,9 @@ class Game extends DataParser {
                     this.addCross(intersectCoordinates)
                 } if (resultShot === 'MISS') {
                     this.addPoint(intersectCoordinates)
+                    this.removeAllModels()
+                    // this.removeClone()
+                    changeMove.init()
                 }
             }
         })
@@ -57,12 +63,14 @@ class Game extends DataParser {
         cross.position.set(position.x - 0.5, 0.001, position.z - .5)
         cross.visible = true
         this.base.scene.add(cross)
+        this.cloneArray.push(cross)
     }
     addPoint(position) {
         const point = this.point.clone()
         point.position.set(position.x - 0.5, 0.001, position.z - .5)
         point.visible = true
         this.base.scene.add(point)
+        this.cloneArray.push(point)
     }
     initPlayerFieldModelsShip(){
         const playerShipsData = this.store.initialState[this.store.initialState.gameState.move].ships
@@ -86,6 +94,7 @@ class Game extends DataParser {
             newShip.position.set(ship.position.x, 0.3, ship.position.z)
             newShip.rotation.set(ship.rotation._x, ship.rotation._y, ship.rotation._z)
             this.base.scene.add(newShip)
+            this.cloneArray.push(newShip)
         })
 
     }
@@ -112,6 +121,11 @@ class Game extends DataParser {
                     this.addPoint(planePosition)
                 }
             })
+        })
+    }
+    removeClone(){
+        this.cloneArray.forEach(clone=>{
+            clone.removeFromParent()
         })
     }
 }

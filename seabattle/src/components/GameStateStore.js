@@ -75,7 +75,6 @@ class GameReducerStore {
             position: value.position,
             rotation: value.rotation
         })
-        console.log(playerShipsData);
     }
 
     addShipCell(value) {

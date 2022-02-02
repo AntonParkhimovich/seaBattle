@@ -39,11 +39,13 @@ class DataParser {
         this.base.controls.enabled = controls
     }
     removeAllModels() {
-        this.base.scene.children.forEach((model) => {
+        const children = this.base.scene.children.slice()
+        children.forEach((model) => {
             if (model.type === 'Group') {
-                model.removeFromParent()
+                this.base.scene.remove(model)
             }
         })
+        console.log(this.base.scene);
     }
     removeModel(model) {
         model.removeFromParent()

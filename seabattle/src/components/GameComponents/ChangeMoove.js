@@ -37,6 +37,21 @@ class ChangeMove {
     onClickFunc() {
         const state = this.store.initialState.gameState
         if (state.gameComponent === 'game') {
+           switch (state.move) {
+               case 'player1':
+                this.store.dispatchActions({ type: 'changeMove', value: null })
+                const gamePlayer1 = new Game(store, GameSceneData, base)
+                gamePlayer1.init() 
+                   break;
+                case 'player2':
+                    this.store.dispatchActions({ type: 'changeMove', value: null })
+                    const gamePlayer2 = new Game(store, GameSceneData, base)
+                    gamePlayer2.init() 
+                   break 
+           }
+                    
+            
+           
         }
         if (state.gameComponent === "arragement") {
             switch (state.move) {

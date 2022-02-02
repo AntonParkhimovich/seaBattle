@@ -23,7 +23,6 @@ class Arragement extends DataParser {
         this.addButton()
         this.sortSceneModels()
         this.store.dispatchActions({type:'initField', value: null})
-       console.log(this.store.initialState)
     }
     addListenerOnClick() {
         window.addEventListener('click', (event) => {
@@ -54,7 +53,6 @@ class Arragement extends DataParser {
     }
     onDragStart(){
         const intersectObjects = this.base.raycaster.intersectObjects(this.ships)
-        console.log(this.ships);
         if(intersectObjects.length> 0 ){
             this.draggableObject = intersectObjects[0].object.parent
             this.startShipPosition.x = this.draggableObject.position.x
@@ -76,7 +74,6 @@ class Arragement extends DataParser {
     }
     sortSceneModels(){
         const models = this.base.scene.children[2].children
-        console.log();
         const {shipsConfig} = this.data
         models.forEach(model=>{
             if(model.name in shipsConfig){
@@ -99,6 +96,7 @@ class Arragement extends DataParser {
             this.draggableObject = null
            if(this.ships.length === 0){
                     this.removeAllModels()
+                    this.removeButton()
                    changeMove.init()
            }
         }else {
@@ -111,6 +109,10 @@ class Arragement extends DataParser {
     removeAllShips(){
         this.removeAllModels()
         this.plane.forEach(plane => this.base.scene.add(plane))
+    }
+    removeButton(){
+        const button= document.querySelector('.button')
+        button.remove()
     }
 
 }
