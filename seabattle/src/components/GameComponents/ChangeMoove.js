@@ -1,5 +1,5 @@
 import store from "../GameStateStore";
-import Arragement from "./Arragement";
+import ArragementComponent from "./Arragement";
 import base from "../BaseInit";
 import ArragementSceneData from '../../Scene Data/ArragementScene'
 import { PlaneBufferGeometry } from "three";
@@ -7,8 +7,9 @@ import Game from "./Game";
 import GameSceneData from "../../Scene Data/GameScene";
 class ChangeMove {
     body = document.body
-    constructor(store) {
+    constructor(store, base) {
         this.store = store
+        this.base = base
     }
     init() {
         this.addModalWindow()
@@ -35,36 +36,19 @@ class ChangeMove {
         button.onclick = () => this.onClickFunc()
     }
     onClickFunc() {
-        const state = this.store.initialState.gameState
-        if (state.gameComponent === 'game') {
-           switch (state.move) {
-               case 'player1':
-                this.store.dispatchActions({ type: 'changeMove', value: null })
-                const gamePlayer1 = new Game(store, GameSceneData, base)
-                gamePlayer1.init() 
-                   break;
-                case 'player2':
-                    this.store.dispatchActions({ type: 'changeMove', value: null })
-                    const gamePlayer2 = new Game(store, GameSceneData, base)
-                    gamePlayer2.init() 
-                   break 
-           }
-                    
-            
-           
-        }
+        const state = this.store.initialState.gameState          
         if (state.gameComponent === "arragement") {
             switch (state.move) {
                 case 'player1':
-                    this.store.dispatchActions({ type: 'changeMove', value: null })
-                    const ArragementComponent = new Arragement(base, ArragementSceneData, store)
-                    ArragementComponent.init()
+                    this.store.dispatchActions({type:'changeMove', value: null })
+                   this.base.camera.position.z = -8
+                   this.base.camera.rotation.set(0.56,-Math.PI, 0)
+                   this.base.camera.updateProjectionMatrix()
+                   this.store.dispatchActions({type:'initField', value: null})
+                   ArragementComponent.sortSceneModels()
                     break;
                 case 'player2':
-                    this.store.dispatchActions({ type: 'changeMove', value: null })
-                    this.store.dispatchActions({ type: 'changeGameComponent', value: 'game' })
-                    const game = new Game(store, GameSceneData, base)
-                    game.init()
+                    console.log(this.store.initialState);
                     break
             }
 
@@ -75,5 +59,5 @@ class ChangeMove {
 
 
 }
-const changeMove = new ChangeMove(store)
+const changeMove = new ChangeMove(store, base)
 export default changeMove

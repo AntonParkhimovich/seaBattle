@@ -46,7 +46,6 @@ class DataParser {
                 this.base.scene.remove(model)
             }
         })
-        console.log(this.base.scene);
     }
     removeModel(model) {
         model.removeFromParent()

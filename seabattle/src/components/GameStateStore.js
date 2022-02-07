@@ -1,7 +1,7 @@
 class GameReducerStore {
     initialState = {
         gameState: {
-            gameComponent: 'start',
+            gameComponent: 'arragement',
             move: 'player1',
             resultShot: '',
             winner:''
@@ -94,7 +94,6 @@ class GameReducerStore {
 
     changeMove() {
         this.initialState.gameState.move === 'player1' ? this.initialState.gameState.move = 'player2' : this.initialState.gameState.move = 'player1'
-        
     }
     checkShot(shot) {
         const enemy = this.initialState.gameState.move === 'player1' ? 'player2' : 'player1'
