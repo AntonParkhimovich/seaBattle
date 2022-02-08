@@ -3,6 +3,7 @@ import store from "../GameStateStore";
 import base from "../BaseInit";
 import * as THREE from 'three'
 import changeMove from "./ChangeMoove";
+import GameSceneData from "../../Scene Data/GameScene";
 
 class Game extends DataParser {
     player
@@ -21,42 +22,44 @@ class Game extends DataParser {
         this.base = base
     }
     async init() {
+        this.store.getLocalStore()
         await super.init()
         this.player = this.store.initialState.gameState.move
         this.enemy = this.player === 'player1'? 'player2': 'player1'
-        this.cross = this.base.scene.children[4].children[0]
         this.point = this.base.scene.children[3].children[0]
+        this.cross = this.base.scene.children[3].children[1]
         this.playerField = this.store.initialState[this.player].field
         this.enemyField = this.store.initialState[this.enemy].field
-        this.playerShipsModels = this.base.scene.children[5].children
         this.addEventListenerOnClick()
-        this.initEnemyField()
-        this.initPlayerField()
+        console.log(this.base.scene);
     }
     addEventListenerOnClick() {
         window.addEventListener('click', () => {
             const raycaster = this.base.raycaster
             const intersect = raycaster.intersectObject(this.base.scene.children[2])
             this.normalizeShotCoordinates(intersect)
-            if (this.shotCoordinates.x >= 0 && this.shotCoordinates.y >= 0) {
-                this.store.dispatchActions({ type: 'shot', value: this.shotCoordinates })
-                const resultShot = this.store.initialState.gameState.resultShot
-                let intersectCoordinates = intersect[0].point.ceil()
-                if (resultShot === "HIT" || resultShot === 'KILL') {
-                    this.addCross(intersectCoordinates)
-                } if (resultShot === 'MISS') {
-                    this.addPoint(intersectCoordinates)
-                    this.removeAllModels()
-                    // this.removeClone()
-                    changeMove.init()
-                }
-            }
+            // if (this.shotCoordinates.x >= 0 && this.shotCoordinates.y >= 0) {
+            //     this.store.dispatchActions({ type: 'shot', value: this.shotCoordinates })
+            //     const resultShot = this.store.initialState.gameState.resultShot
+            //     let intersectCoordinates = intersect[0].point.ceil()
+            //     if (resultShot === "HIT" || resultShot === 'KILL') {
+            //         this.addCross(intersectCoordinates)
+            //     } if (resultShot === 'MISS') {
+            //         this.addPoint(intersectCoordinates)
+            //         // this.removeClone()
+            //         changeMove.init()
+            //     }
+            // }
         })
     }
     normalizeShotCoordinates(intersect) {
-        this.shotCoordinates.x = -(intersect[0].point.x + 1)
-        this.shotCoordinates.y = -(intersect[0].point.z + 13)
-        this.shotCoordinates.ceil()
+        const move = this.store.initialState.gameState.move
+        const intersectObject = intersect[0]
+        if(move === 'player1'){
+            this.shotCoordinates.x = intersectObject.point.z -10
+        }
+        
+        console.log(this.shotCoordinates.x);
     }
     addCross(position) {
         const cross = this.cross.clone()
@@ -129,4 +132,5 @@ class Game extends DataParser {
         })
     }
 }
-export default Game
+const game = new Game(store,GameSceneData,base)
+export default game

@@ -3,7 +3,7 @@ import base from "../BaseInit";
 import startSceneData from "../../Scene Data/StartScene";
 import changeMove from "./ChangeMoove";
 import ArragementComponent from "./Arragement";
-import Game from "./Game";
+import game from "./Game";
 import GameSceneData from '../../Scene Data/GameScene'
 import store from "../GameStateStore";
 import ArragementSceneData from "../../Scene Data/ArragementScene";
@@ -21,7 +21,7 @@ class Start extends DataParser{
             const foundIntersec = raycaster.intersectObject(this.base.scene.children[2])
             if (foundIntersec.length > 0) {
                 this.removeAllModels()
-                ArragementComponent.init()
+               ArragementComponent.init()
                 store.dispatchActions({type:'changeGameComponent', value:'arragement'})
                 window.removeEventListener('click', listener)
             }

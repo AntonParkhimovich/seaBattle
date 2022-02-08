@@ -3,29 +3,20 @@ const GameSceneData = {
         name:'game',
         position:{x: 0, y: 0, z: 0},
         rotation: {x: 0, y:0, z:0},
-        url:"/objects/game.gltf"
-    }, {name: 'point',
-        position: {x:0, y:0,z:0},
-        rotation: {x:0, y:0, z:0},
-        visible: false,
-        url:"/objects/point.gltf"
+        url:"/objects/gameTest.gltf"
     },
-    {name: 'cross',
-        position: {x:0, y:0,z:0},
-        rotation: {x:0, y:0, z:0},
-        visible: false,
-        url:"/objects/cross.gltf"
-    },
-    {name: 'gameShips',
-    position: {x:0, y:0,z:0},
-    rotation: {x:0, y:0, z:0},
-    visible: false,
-    url:"/objects/gameShips.gltf"
-}
+    {
+        name:'crossPlaneGroup',
+        position:{x: 0, y: 0, z: 0},
+        rotation: {x: 0, y:0, z:0},
+        url:"/objects/game.gltf",
+        visible: false
+    }
 ],
     camera:{
-        position:{x: 5, y: 18, z: 0}
+        position:{x: 0, y:20, z: 8},
+        rotation:{x:-0.56, y:0, z:0}
     },
-    controls: false
+    
 }
 export default GameSceneData

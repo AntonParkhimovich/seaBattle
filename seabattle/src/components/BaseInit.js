@@ -79,14 +79,12 @@ class BaseInit {
     if (move === "player1") {
       normalizeCoordinates.x = -(coords.z+10) ;
       normalizeCoordinates.y = (coords.x +11) ;
-      normalizeCoordinates.floor()
     }
     if(move === 'player2'){
       normalizeCoordinates.x = (coords.z-10)
       normalizeCoordinates.y = -(coords.x-11)
-      normalizeCoordinates.floor()
-      console.log(normalizeCoordinates);
     }
+    normalizeCoordinates.floor()
     return normalizeCoordinates;
   }
   tick() {

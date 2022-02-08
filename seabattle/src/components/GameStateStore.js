@@ -143,6 +143,13 @@ class GameReducerStore {
     checkWinner(arr){
         arr.length === 10? this.initialState.gameState.winner = this.initialState.gameState.move: null
     }
+    addLocalStore(){
+        const localStore = window.localStorage
+        localStore.setItem('state', JSON.stringify(this.initialState))
+    }
+    getLocalStore(){
+        this.initialState = JSON.parse(window.localStorage.getItem('state'))
+    }
 }
 
 const store = new GameReducerStore()
