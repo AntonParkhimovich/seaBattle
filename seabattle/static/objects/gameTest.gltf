@@ -18,7 +18,7 @@
     "nodes" : [
         {
             "mesh" : 0,
-            "name" : "Plane.001",
+            "name" : "PlanePlayer1",
             "translation" : [
                 -6,
                 0,
@@ -27,7 +27,7 @@
         },
         {
             "mesh" : 1,
-            "name" : "Plane.002",
+            "name" : "PlanePlayer1Enemy",
             "translation" : [
                 6,
                 0,
@@ -36,7 +36,7 @@
         },
         {
             "mesh" : 2,
-            "name" : "Plane003",
+            "name" : "PlanePlayer2Enemy",
             "translation" : [
                 -6,
                 0,
@@ -45,7 +45,7 @@
         },
         {
             "mesh" : 3,
-            "name" : "Plane004",
+            "name" : "PlanePLayer2",
             "translation" : [
                 6,
                 0,

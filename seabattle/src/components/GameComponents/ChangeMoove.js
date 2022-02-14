@@ -46,8 +46,11 @@ class ChangeMove {
     }
     onClickFunc() {
         const state = this.store.initialState.gameState  
+        if(state.gameComponent === 'game'){
+            this.changeMove()
+            game.updatePlayer()
+        }
         if (state.gameComponent === "arragement") {
-            debugger
             switch (state.move) {
                 case 'player1':
                     this.changeMove()
@@ -58,12 +61,11 @@ class ChangeMove {
                 case 'player2':
                     ArragementComponent.removeAllListener()
                     this.changeMove()
-                    this.store.addLocalStore()
                     ArragementComponent.removeButton()
+                    this.store.dispatchActions({type:'changeGameComponent', value: 'game'})
                     game.init()
                     break
             }
-
         }
 
         this.removeModalWindow()

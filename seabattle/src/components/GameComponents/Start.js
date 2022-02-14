@@ -21,7 +21,7 @@ class Start extends DataParser{
             const foundIntersec = raycaster.intersectObject(this.base.scene.children[2])
             if (foundIntersec.length > 0) {
                 this.removeAllModels()
-               ArragementComponent.init()
+                ArragementComponent.init()
                 store.dispatchActions({type:'changeGameComponent', value:'arragement'})
                 window.removeEventListener('click', listener)
             }

@@ -1,10 +1,5 @@
 const GameSceneData = {
-    objects:[{
-        name:'game',
-        position:{x: 0, y: 0, z: 0},
-        rotation: {x: 0, y:0, z:0},
-        url:"/objects/gameTest.gltf"
-    },
+    objects:[
     {
         name:'crossPlaneGroup',
         position:{x: 0, y: 0, z: 0},

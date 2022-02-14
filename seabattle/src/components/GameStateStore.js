@@ -1,7 +1,7 @@
 class GameReducerStore {
     initialState = {
         gameState: {
-            gameComponent: 'arragement',
+            gameComponent: 'start',
             move: 'player1',
             resultShot: '',
             winner:''
@@ -19,7 +19,6 @@ class GameReducerStore {
             killedShips:[]
         }
     }
-
     dispatchActions(action) {
         let { type, value } = action
         switch (type) {
@@ -142,13 +141,6 @@ class GameReducerStore {
     }
     checkWinner(arr){
         arr.length === 10? this.initialState.gameState.winner = this.initialState.gameState.move: null
-    }
-    addLocalStore(){
-        const localStore = window.localStorage
-        localStore.setItem('state', JSON.stringify(this.initialState))
-    }
-    getLocalStore(){
-        this.initialState = JSON.parse(window.localStorage.getItem('state'))
     }
 }
 

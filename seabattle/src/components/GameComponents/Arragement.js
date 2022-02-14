@@ -26,7 +26,6 @@ class Arragement extends DataParser {
     this.addButton();
     this.sortSceneModels();
     this.store.dispatchActions({ type: "initField", value: null });
-    console.log(this.intersectPlane);
   }
   addListenerOnClick() {
     const listenerOnClick = () => {
@@ -46,7 +45,6 @@ class Arragement extends DataParser {
       const intersect = this.base.raycaster.intersectObject(
         this.intersectPlane
       );
-      console.log(this.intersectPlane)
       if (this.draggableObject !== null) {
         if(intersect.length!== 0){
             const intersectPosition = intersect[0].point;
@@ -65,7 +63,6 @@ class Arragement extends DataParser {
       this.store.initialState.gameState.move,
       "arragement"
     );
-    console.log(x, y);
     this.addShipOnPlane(x, y);
   }
   onDragStart() {

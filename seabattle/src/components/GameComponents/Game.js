@@ -22,114 +22,87 @@ class Game extends DataParser {
         this.base = base
     }
     async init() {
-        this.store.getLocalStore()
         await super.init()
-        this.player = this.store.initialState.gameState.move
-        this.enemy = this.player === 'player1'? 'player2': 'player1'
-        this.point = this.base.scene.children[3].children[0]
-        this.cross = this.base.scene.children[3].children[1]
-        this.playerField = this.store.initialState[this.player].field
-        this.enemyField = this.store.initialState[this.enemy].field
+        this.updatePlayer()
+        this.point = this.base.scene.children[3].children[1]
+        this.cross = this.base.scene.children[3].children[0]
         this.addEventListenerOnClick()
-        console.log(this.base.scene);
+        console.log(this.store.initialState);
     }
     addEventListenerOnClick() {
         window.addEventListener('click', () => {
+            const planeEnemy = this.player === 'player1'?this.base.scene.children[2].children[0].children[11]:this.base.scene.children[2].children[1].children[10]
             const raycaster = this.base.raycaster
-            const intersect = raycaster.intersectObject(this.base.scene.children[2])
-            this.normalizeShotCoordinates(intersect)
-            // if (this.shotCoordinates.x >= 0 && this.shotCoordinates.y >= 0) {
-            //     this.store.dispatchActions({ type: 'shot', value: this.shotCoordinates })
-            //     const resultShot = this.store.initialState.gameState.resultShot
-            //     let intersectCoordinates = intersect[0].point.ceil()
-            //     if (resultShot === "HIT" || resultShot === 'KILL') {
-            //         this.addCross(intersectCoordinates)
-            //     } if (resultShot === 'MISS') {
-            //         this.addPoint(intersectCoordinates)
-            //         // this.removeClone()
-            //         changeMove.init()
-            //     }
-            // }
+            const intersect = raycaster.intersectObject(planeEnemy)
+            console.log(intersect);
+            console.log(this.store);
+            console.log(planeEnemy);
+            if(intersect.length>0){
+                const intersectCoordinates = intersect[0].point
+                this.normalizeShotCoordinates(intersectCoordinates)
+                if(this.enemyField[this.shotCoordinates.y][this.shotCoordinates.x].shot === false){
+                    console.log('shot');
+                    this.store.dispatchActions({ type: 'shot', value: this.shotCoordinates })
+                    const resultShot = this.store.initialState.gameState.resultShot
+                    if (resultShot === "HIT" || resultShot === 'KILL') {
+                        this.addCross(intersectCoordinates)
+                    } if (resultShot === 'MISS') {
+                        this.addPoint(intersectCoordinates)
+                        changeMove.init()
+                    }
+                }
+                
+            }
+           
         })
-    }
-    normalizeShotCoordinates(intersect) {
-        const move = this.store.initialState.gameState.move
-        const intersectObject = intersect[0]
-        if(move === 'player1'){
-            this.shotCoordinates.x = intersectObject.point.z -10
-        }
-        
-        console.log(this.shotCoordinates.x);
     }
     addCross(position) {
         const cross = this.cross.clone()
+        position.ceil()
         cross.position.set(position.x - 0.5, 0.001, position.z - .5)
         cross.visible = true
         this.base.scene.add(cross)
-        this.cloneArray.push(cross)
+        const cross2 = this.cross.clone()
+        if(this.player === 'player1'){
+            cross2.position.set((13-position.x)-0.5, 0.001, (1-position.z)-.5)
+        }else{
+            cross2.position.set((-11-position.x)-0.5, 0.001, (1-position.z)-.5)
+        }
+        cross2.visible = true
+        this.base.scene.add(cross2)
     }
     addPoint(position) {
         const point = this.point.clone()
+        position.ceil()
         point.position.set(position.x - 0.5, 0.001, position.z - .5)
         point.visible = true
         this.base.scene.add(point)
-        this.cloneArray.push(point)
+        const point2 = this.point.clone()
+        if(this.player === 'player1'){
+            point2.position.set((13-position.x)-0.5, 0.001, (1-position.z)-.5)
+        }else{
+            point2.position.set((-11-position.x)-0.5, 0.001, (1-position.z)-.5)
+        }
+        point2.visible = true
+        this.base.scene.add(point2)
     }
-    initPlayerFieldModelsShip(){
-        const playerShipsData = this.store.initialState[this.store.initialState.gameState.move].ships
-        playerShipsData.forEach((ship) => {
-            let newShip
-            switch (ship.deck) {
-                case 1:
-                    newShip = this.playerShipsModels[1].clone()
-                    break;
-                case 2:
-                    newShip = this.playerShipsModels[2].clone()
-                    break;
-                case 3:
-                    newShip = this.playerShipsModels[3].clone() 
-                    break;
-
-                case 4:
-                    newShip = this.playerShipsModels[0].clone()
-                    break;
-            }
-            newShip.position.set(ship.position.x, 0.3, ship.position.z)
-            newShip.rotation.set(ship.rotation._x, ship.rotation._y, ship.rotation._z)
-            this.base.scene.add(newShip)
-            this.cloneArray.push(newShip)
-        })
-
+    normalizeShotCoordinates(coords){
+        if(this.player ==='player1'){
+            this.shotCoordinates.x = - coords.z -11
+            this.shotCoordinates.y = coords.x - 2
+            this.shotCoordinates.ceil()
+        }else{
+            this.shotCoordinates.x = coords.z -11
+            this.shotCoordinates.y = -coords.x -2
+            this.shotCoordinates.ceil()
+            console.log(this.shotCoordinates);
+        }
     }
-    initPlayerField() {
-        this.initPlayerFieldModelsShip()
-        this.playerField.forEach((row)=>{
-            row.forEach((cell)=>{
-                const planePosition = new THREE.Vector3(-(cell.x), 0, -(cell.y))
-                if(cell.shot&& cell.containsShip){
-                    this.addCross(planePosition)
-                }if(cell.shot && !cell.containsShip){
-                    this.addPoint(planePosition)
-                }
-            })
-        })
-    }
-    initEnemyField() {
-        this.enemyField.forEach((row) => {
-            row.forEach((cell) => {
-                const planePosition = new THREE.Vector3(-(cell.x), 0, -(cell.y) - 12)
-                if (cell.shot && cell.containsShip) {
-                    this.addCross(planePosition)
-                } if (cell.shot && !cell.containsShip) {
-                    this.addPoint(planePosition)
-                }
-            })
-        })
-    }
-    removeClone(){
-        this.cloneArray.forEach(clone=>{
-            clone.removeFromParent()
-        })
+    updatePlayer(){
+        this.player = this.store.initialState.gameState.move
+        this.enemy = this.player === 'player1'? 'player2': 'player1'
+        this.playerField = this.store.initialState[this.player].field
+        this.enemyField = this.store.initialState[this.enemy].field
     }
 }
 const game = new Game(store,GameSceneData,base)
