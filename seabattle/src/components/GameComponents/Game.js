@@ -1,7 +1,7 @@
 import DataParser from "./DataParser";
 import store from "../GameStateStore";
 import base from "../BaseInit";
-import * as THREE from 'three'
+import { Vector2 } from "three";
 import changeMove from "./ChangeMoove";
 import GameSceneData from "../../Scene Data/GameScene";
 
@@ -11,11 +11,9 @@ class Game extends DataParser {
     playerField
     enemyField
     playerShipsModels
-    shotCoordinates = new THREE.Vector2()
+    shotCoordinates = new Vector2()
     cross
     point
-    cloneArray = []
-
     constructor(store, data, base) {
         super(base, data)
         this.store = store
@@ -24,28 +22,28 @@ class Game extends DataParser {
     async init() {
         await super.init()
         this.updatePlayer()
-        this.point = this.base.scene.children[3].children[1]
-        this.cross = this.base.scene.children[3].children[0]
+        this.initGameLog()
+        this.point = this.base.scene.children[3].getObjectByName('planePoint')
+        this.cross = this.base.scene.children[3].getObjectByName('planeCross')
         this.addEventListenerOnClick()
-        console.log(this.store.initialState);
     }
     addEventListenerOnClick() {
         window.addEventListener('click', () => {
             const planeEnemy = this.player === 'player1'?this.base.scene.children[2].children[0].children[11]:this.base.scene.children[2].children[1].children[10]
             const raycaster = this.base.raycaster
             const intersect = raycaster.intersectObject(planeEnemy)
-            console.log(intersect);
-            console.log(this.store);
-            console.log(planeEnemy);
             if(intersect.length>0){
                 const intersectCoordinates = intersect[0].point
                 this.normalizeShotCoordinates(intersectCoordinates)
                 if(this.enemyField[this.shotCoordinates.y][this.shotCoordinates.x].shot === false){
-                    console.log('shot');
                     this.store.dispatchActions({ type: 'shot', value: this.shotCoordinates })
                     const resultShot = this.store.initialState.gameState.resultShot
+                    this.updateGameLog(this.player, resultShot)
                     if (resultShot === "HIT" || resultShot === 'KILL') {
                         this.addCross(intersectCoordinates)
+                        if(this.store.initialState.gameState.winner){
+                            changeMove.init()
+                        }
                     } if (resultShot === 'MISS') {
                         this.addPoint(intersectCoordinates)
                         changeMove.init()
@@ -95,7 +93,6 @@ class Game extends DataParser {
             this.shotCoordinates.x = coords.z -11
             this.shotCoordinates.y = -coords.x -2
             this.shotCoordinates.ceil()
-            console.log(this.shotCoordinates);
         }
     }
     updatePlayer(){
@@ -103,6 +100,22 @@ class Game extends DataParser {
         this.enemy = this.player === 'player1'? 'player2': 'player1'
         this.playerField = this.store.initialState[this.player].field
         this.enemyField = this.store.initialState[this.enemy].field
+    }
+    initGameLog(){
+        document.body.insertAdjacentHTML('afterbegin',`
+            <div class='game-log__wrapper'>
+                <h2 class='game-log__title'>Game log:</h2>
+                <div class= 'game-log'>
+
+                </div>
+            </div>
+        `)
+    }
+    updateGameLog(player, resultShot){
+        const gameLog = document.querySelector('.game-log')
+        const message =  document.createElement('span')
+        message.textContent = `${player}: ${resultShot}`
+        gameLog.appendChild(message)
     }
 }
 const game = new Game(store,GameSceneData,base)

@@ -1,10 +1,7 @@
 import store from "../GameStateStore";
 import ArragementComponent from "./Arragement";
 import base from "../BaseInit";
-import ArragementSceneData from '../../Scene Data/ArragementScene'
-import { PlaneBufferGeometry } from "three";
 import game from "./Game";
-import GameSceneData from "../../Scene Data/GameScene";
 class ChangeMove {
     body = document.body
     constructor(store, base) {
@@ -14,6 +11,9 @@ class ChangeMove {
     init() {
         this.addModalWindow()
         this.addOnClickFunc()
+        if(this.store.initialState.gameState.winner){
+            this.showWinner(this.store.initialState.gameState.winner)
+        }
     }
     addModalWindow() {
         let { move } = this.store.initialState.gameState
@@ -47,16 +47,19 @@ class ChangeMove {
     onClickFunc() {
         const state = this.store.initialState.gameState  
         if(state.gameComponent === 'game'){
-            this.changeMove()
-            game.updatePlayer()
+            if(state.winner){
+                window.location.reload()
+            }else{
+                this.changeMove()
+                game.updatePlayer()
+            }
         }
         if (state.gameComponent === "arragement") {
             switch (state.move) {
                 case 'player1':
                     this.changeMove()
                     this.store.dispatchActions({type:'initField', value: null})
-                   ArragementComponent.sortSceneModels()
-                   console.log(state); 
+                   ArragementComponent.sortSceneModels() 
                     break;
                 case 'player2':
                     ArragementComponent.removeAllListener()
@@ -70,7 +73,12 @@ class ChangeMove {
 
         this.removeModalWindow()
     }
-
+    showWinner(winner){
+        const winnerText = document.querySelector('.modal-text')
+        winnerText.textContent = `Winner ${winner}!`
+        const button = document.querySelector('.modal-button')
+        button.textContent = 'new game'
+    }
 
 }
 const changeMove = new ChangeMove(store, base)

@@ -1,12 +1,8 @@
 import DataParser from "./DataParser";
 import base from "../BaseInit";
 import startSceneData from "../../Scene Data/StartScene";
-import changeMove from "./ChangeMoove";
 import ArragementComponent from "./Arragement";
-import game from "./Game";
-import GameSceneData from '../../Scene Data/GameScene'
 import store from "../GameStateStore";
-import ArragementSceneData from "../../Scene Data/ArragementScene";
 class Start extends DataParser{
     constructor(base, startSceneData) {
         super(base, startSceneData);

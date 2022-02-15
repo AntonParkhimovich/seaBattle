@@ -3,7 +3,7 @@ const ArragementSceneData = {
         name:'ArragementField',
         position:{x: 0, y: 0, z: 0},
         rotation: {x: 0, y:0, z:0},
-        url:"/objects/arragementTest.gltf"
+        url:"/objects/arragement.gltf"
     }],
     camera:{
         position:{x: 0, y:20, z: 8},

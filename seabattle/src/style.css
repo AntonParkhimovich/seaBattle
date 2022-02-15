@@ -31,3 +31,20 @@ html, body{
 .modal-text{
     font-size: 90px;
 }
+.game-log__wrapper{
+    width: 23vw;
+    height: 20vh;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    align-items: center;
+}
+.game-log{
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    height: 100%;
+    border: 1px solid black;
+}

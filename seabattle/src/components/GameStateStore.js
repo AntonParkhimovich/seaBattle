@@ -98,7 +98,6 @@ class GameReducerStore {
         const enemy = this.initialState.gameState.move === 'player1' ? 'player2' : 'player1'
         const enemyShips = this.initialState[enemy].shipsCell
         const enemyField = this.initialState[enemy].field
-
         if (enemyField[shot.y][shot.x].containsShip === true) {
             if (!enemyField[shot.y][shot.x].shot) {
                 let shipCellArray = this.findShipCellArray(enemyShips, shot)

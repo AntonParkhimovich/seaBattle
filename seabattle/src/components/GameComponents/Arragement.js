@@ -1,16 +1,15 @@
 import DataParser from "./DataParser";
 import base from "../BaseInit";
 import ArragementSceneData from "../../Scene Data/ArragementScene";
-import * as THREE from "three";
+import { Vector3 } from "three";
 import { checkBattleField } from "./../checkBattleFIeld";
-import Game from "./Game";
 import changeMove from "./ChangeMoove";
 import store from "../GameStateStore";
 class Arragement extends DataParser {
   draggableObject = null;
   plane = [];
   ships = [];
-  startShipPosition = new THREE.Vector3();
+  startShipPosition = new Vector3();
   directionShips = "horizontally";
   mouseMoveListener;
   listenerOnClick;
